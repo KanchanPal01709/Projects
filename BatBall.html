@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Cricket Game</title>
+    <link rel="stylesheet" href="BatBallCSS/BatBall.css">
+</head>
+<body>
+
+    <div class="fullPage">
+    <div>
+        <h1 class="headingText">Bat Ball Stump Game</h1>
+    </div>
+
+<div>
+
+<button class="buttons" onclick="
+let UserChoice= 'BAT';
+let computerChoice ='';
+let finalResult = '';
+let alertDisplayString = '';
+let randomNumber = Math.random() * 3;
+
+computerChoice = ComputerChoiceCal(randomNumber);
+finalResult = finalResultCal(computerChoice, UserChoice);
+scoreBoardCalculate(finalResult);
+alertDisplayString = alertDisplay(UserChoice,computerChoice,finalResult);
+
+
+document.querySelector('.result').innerHTML=alertDisplayString;
+">
+    <img src="Images/bat.png" alt="Bat">
+</button>
+
+
+
+<button class="buttons" onclick="
+UserChoice= 'BALL';
+randomNumber = Math.random() * 3;
+computerChoice ='';
+finalResult = '';
+
+computerChoice = ComputerChoiceCal(randomNumber);
+finalResult = finalResultCal(computerChoice, UserChoice);
+scoreBoardCalculate(finalResult);
+alertDisplayString = alertDisplay(UserChoice,computerChoice,finalResult)
+
+
+document.querySelector('.result').innerHTML=alertDisplayString;
+
+
+">
+    <img class="image" src="Images/ball.png" alt="ball">
+</button>
+
+<button class="buttons" onclick="
+UserChoice= 'STUMP';
+randomNumber = Math.random() * 3;
+
+computerChoice = ComputerChoiceCal(randomNumber);
+finalResult = finalResultCal(computerChoice, UserChoice);
+scoreBoardCalculate(finalResult);
+alertDisplayString = alertDisplay(UserChoice,computerChoice,finalResult)
+
+
+document.querySelector('.result').innerHTML=alertDisplayString;
+
+">
+    <img class="image" src="Images/stump.png" alt="stump">
+</button>
+
+</div>
+
+<div class="resultContainer" >
+   
+<h4 class="result"> Lets begin the Game <br>Initial Scores : <br> WON : 0 <br> LOST : 0 <br> TIE : 0 </be></h4>
+</div>
+<div>
+    <button class="reset-buttons" onclick="
+    localStorage.clear();
+    scoreBoard.win=0;
+    scoreBoard.lost=0;
+    scoreBoard.tie=0;
+    let refreshStr = 'Play Again!! <br> Score: <br> WIN : 0 <br> LOST : 0<br> TIE : 0 <br>';
+    document.querySelector('.result').innerHTML= refreshStr;
+    ">ResetScore</button>
+</div>
+
+</div>
+
+
+
+<script>
+
+randomNumber = Math.random() * 3;
+
+//function to calculate computers move
+
+
+function ComputerChoiceCal(randomNumber){
+    if(randomNumber >= 0 && randomNumber<1)
+{
+  return'BAT';
+   
+}
+
+if(randomNumber >= 1 && randomNumber<2)
+{
+    return 'BALL';
+   
+}
+
+if(randomNumber >= 2 && randomNumber<3)
+{
+   return 'STUMP';
+    
+}
+}
+
+//function to calculate final result
+function finalResultCal(computerChoice, UserChoice){
+
+if(computerChoice === 'BAT' && UserChoice ==='BAT'){
+
+return 'Its a Tie';
+
+
+}
+
+else if(computerChoice === 'BALL' && UserChoice ==='BALL'){
+
+return 'Its a Tie';
+
+
+}
+
+else if(computerChoice === 'STUMP' && UserChoice ==='STUMP'){
+
+return 'Its a Tie';
+
+
+}
+
+else if(computerChoice === 'BAT' && UserChoice ==='BALL'){
+
+return 'You Lost!!';
+
+}
+
+else if(computerChoice === 'BAT' && UserChoice ==='STUMP'){
+
+return 'You Won!!';
+
+}
+
+else if(computerChoice === 'BALL' && UserChoice ==='BAT'){
+
+return 'You Won!!';
+
+}
+
+else if(computerChoice === 'BALL' && UserChoice ==='STUMP'){
+
+return 'You Lost!!';
+
+}
+
+else if(computerChoice === 'STUMP' && UserChoice ==='BALL'){
+
+return 'You Won!!';
+
+}
+
+else if(computerChoice === 'STUMP' && UserChoice ==='BAT'){
+
+return 'You Lost!!';
+}
+
+}
+
+
+
+// code to survive refresh to maintain same scores
+
+let scoreStr = localStorage.getItem('Board')
+let scoreBoard;
+if(scoreStr != undefined){
+
+    scoreBoard = JSON.parse(scoreStr);
+}
+else{
+    scoreBoard ={
+       
+       win : 0,
+       lost : 0,
+       tie : 0,   
+
+   };
+
+}
+
+
+
+//function to calculate score
+
+function scoreBoardCalculate(finalResult)
+    {
+        if(finalResult === 'You Won!!')
+        {
+            scoreBoard.win = scoreBoard.win + 1;
+
+        }
+       
+
+        else if (finalResult === 'You Lost!!'){
+            scoreBoard.lost = scoreBoard.lost + 1;
+
+        }
+       
+
+        else if (finalResult === 'Its a Tie'){
+            scoreBoard.tie = scoreBoard.tie + 1;
+
+        }
+    
+
+    }
+
+
+// function to display calculated result
+
+    function alertDisplay(UserChoice,computerChoice,finalResult){
+
+        // storing values in local storage to survive refresh
+
+        localStorage.setItem('Board', JSON.stringify(scoreBoard));
+
+        alertDisplayString  = `You have choosen :${UserChoice } <br> Computer has choosen : ${computerChoice} <br>Final Result is :${finalResult} <br>ScoreBoard : <br>WIN = ${ scoreBoard.win} <br>LOST = ${scoreBoard.lost} <br>TIE =  ${scoreBoard.tie}`;
+        return alertDisplayString;
+
+    }
+    
+</script>
+
+    
+</body>
+</html>
